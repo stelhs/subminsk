@@ -232,6 +232,31 @@ if(isset($_POST['post_query']))
             }
             break;
 
+        case "change_pass":
+            $admin = auth_get_admin();
+            if(!$admin)
+                continue;
+            
+            $new_pass = addslashes($_POST['new_pass']);
+            $new_pass_repeate = addslashes($_POST['new_pass_repeate']);
+            if (!$new_pass || ($new_pass != $new_pass_repeate)) {
+                message_box_display("message_einval");
+                header('Location: index.php?mod=cabinet');
+                break;
+            }
+
+            $rc = user_change_pass($admin, $new_pass);
+            if ($rc < 0) {
+                    message_box_display("message_esql");
+                    header('Location: index.php?mod=cabinet');
+                    break;                
+            }
+
+            message_box_display("message_change_pass_success");
+            header('Location: index.php?mod=cabinet');            
+            break;
+
+
             /* Выбор списка продуктов по категории */
         case "get_category":
         	if(!isset($_POST["category_name"]))

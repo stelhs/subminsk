@@ -41,5 +41,21 @@ function users_get_list()
     return $users;
 }
 
+function user_change_pass($user_id, $new_pass)
+{
+    if (!is_numeric($user_id) || !isset($user_id) || !$new_pass)
+        return EINVAL;
+
+    $query = "UPDATE users " .
+                    'SET `pass` = PASSWORD("' . $new_pass . '") ' .
+                    'WHERE id = '. (int)$user_id;
+
+    $result = db_query($query);
+
+    if ($result == FALSE)
+        return ESQL;
+
+    return 0;
+}
 
 ?>

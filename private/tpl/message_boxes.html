@@ -28,7 +28,7 @@
     <!-- START INSERT : message_box.html -->
         <color>red</color>
         <header><div style="color: red">Error</div></header>
-        <message>Ошибка запроса</message>
+        <message>Ошибка запроса к БД</message>
     <!-- END INSERT : message_box.html -->
 <!-- END BLOCK : message_esql -->
 
@@ -52,10 +52,18 @@
 <!-- START BLOCK : message_adm_login_incorrect -->
     <!-- START INSERT : message_box.html -->
         <color>red</color>
-        <header>EROR</header>
-        <message>Неверно введен логин и/или пароль</message>
+        <header>Ошибка</header>
+        <message>Неверное имя пользователя и/или пароль</message>
     <!-- END INSERT : message_box.html -->
 <!-- END BLOCK : message_adm_login_incorrect -->
+
+<!-- START BLOCK : message_change_pass_success -->
+    <!-- START INSERT : message_box.html -->
+        <color>green</color>
+        <header>Получилось</header>
+        <message>Новый пароль успешно применён</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_change_pass_success -->
 
 <!-- START BLOCK : message_transaction_success -->
     <!-- START INSERT : message_box.html -->

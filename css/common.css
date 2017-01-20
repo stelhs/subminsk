@@ -15,7 +15,6 @@ body
 h1
 {
     font-size: 16px;
-    letter-spacing: -0.8pt; 
     font-weight:normal;
     text-align: center;
 }
@@ -48,19 +47,11 @@ a:link, a:visited
 { 
     color:#AAAAAA;
     text-decoration:none;
-    border: solid 1px #AAAAAA;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin: 5px;
 }
 
 a:active, a:hover
 {
     color:#FFFFFF;
-    border: solid 1px #FFFFFF;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin: 5px;
 }
 
 form
@@ -117,13 +108,13 @@ ul.menu li {
 	
 ul.menu li a:link, ul.menu li a:visited, ul.menu li a:active {
     border: 1px solid #AAAAAA;
-    padding: 5px 15px 1px 15px;
+    padding: 3px 15px 3px 15px;
 	text-decoration: none;
     color:   #AAAAAA;
 }
 ul.menu li a:hover {
 	border: 1px solid #ffffff;
-	padding: 5px 15px 1px 15px;
+	padding: 3px 15px 3px 15px;
 	text-decoration: none;
     color:   #FFFFFF;
 }
@@ -153,3 +144,21 @@ ul.menu li a:hover {
     border-spacing: 5px;
 }
 
+/*#s_button_black a:link, a:visited 
+{ 
+    color: #AAAAAA;
+    text-decoration:none;
+    border: solid 1px #AAAAAA;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+}*/
+
+#s_button_black a:active, a:hover, a:link, a:visited 
+{
+    color:#FFFFFF;
+    border: solid 1px #FFFFFF;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+}

@@ -19,6 +19,7 @@ require_once "private/mods/m_adm_articles.php";
 require_once "private/mods/m_articles.php";
 require_once "private/mods/m_list_transactions.php";
 require_once "private/mods/m_adm_login.php";
+require_once "private/mods/m_cabinet.php";
 
 /* начальная инициализация системы */
 require_once "private/init.php";
@@ -42,6 +43,10 @@ if (auth_get_admin())
             
         case 'list_transactions':
             $mod_content = m_list_transactions($_GET);
+            break;
+
+        case 'cabinet':
+            $mod_content = m_cabinet($_GET);
             break;
         default:
         	$mod_content = m_articles();

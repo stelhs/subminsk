@@ -71,7 +71,7 @@ function m_list_transactions($argv = array())
     }
 
     $user = $users[$admin_id];
-    if ($user['role_viewer'] == 1) {
+    if ($user['role_manager'] == 1) {
         $tpl->assign("transaction_add");
         $tpl->assign("pledged_add", array('author_id' => $admin_id));
         $users = users_get_list();

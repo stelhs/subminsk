@@ -1,0 +1,44 @@
+/* шаблон оформляющий внешний вид личного кабинета */
+
+
+<!-- START BLOCK : change_password -->
+    <div align="center">
+        <script>
+           function form5_check_fields() 
+           {
+               var form;
+               form = document.getElementById("change_pass");
+               if (form.new_pass.value == "")
+                   alert("Новый пароль не введен");
+               else if (form.new_pass.value != form.new_pass_repeate.value)
+                   alert("Подтверждение нового пароля не совпадает");
+               else 
+                   form.submit();
+           }
+        </script>
+
+        <div style="border: solid 2px #AAAAAA; margin: 10px; width:400px">
+            <h2>Сменить пароль</h2>
+            <form name="form5" method="POST" action="{http_root}exchange.php" id="change_pass">
+                <input type="hidden" name="post_query" value="change_pass">                     
+                <table border="0" cellspacing="5" cellpadding="5">
+                    <tr>
+                        <td align="right" valign="top">Новый пароль</td>
+                        <td><input type="password" name="new_pass" size="20" value="" ></td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Подтвердить пароль</td>
+                        <td><input type="password" name="new_pass_repeate" size="20" value="" ></td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="2">
+                            <a href="javascript:;" onclick="form5_check_fields()" id="s_button_black">Применить</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+ <!-- END BLOCK : change_password -->
+
+ 

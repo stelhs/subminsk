@@ -5,7 +5,7 @@ define("EINVAL", -1); // Ошибка во входных аргументах
 define("EBASE", -2); // Ошибка связи с базой
 define("ESQL", -3); // Не корректный SQL запрос
 define("ENOTUNIQUE", -4); // Ошибка добавления в базу, если такая запись уже существует
-define('HTTP_ROOT_PATH', '/pobory/'); //путь к файлам
+define('HTTP_ROOT_PATH', '/underminsk/'); //путь к файлам
 
 /*  Глобальный массив параметров для соединения с бд */
 $db_connection_settings = array("host" => '127.0.0.1  ',

@@ -14,10 +14,12 @@
                 <img src="{http_img}luk.jpg" id="header_logo">
                 <ul class="menu">
                     <!-- START BLOCK : public_menu --> 
-                        <li><a href="index.php?mod=adm_login">Поборы</a></li>
+                        <li><a href="index.php?mod=adm_login">Вход</a></li>
                     <!-- END BLOCK : public_menu --> 
                     /* блок меню администратора */
                     <!-- START BLOCK : admin_menu --> 
+                        <li><a href="index.php?mod=cabinet"> Личный кабинет </a> </li>
+                        <li><a href="index.php?mod=list_transactions"> Фонд Underminsk </a> </li>
                         <li><a href="exchange.php?get_query=adm_logout"> Выход </a> </li>
                     <!-- END BLOCK : admin_menu -->                           
                  </ul>   
@@ -25,7 +27,7 @@
             <div align="center">
             <div class="content">
                 <!-- START BLOCK : admin_greeting --> 
-                    <h1>Добро пожаловать {name}!</h1>
+                    <h1>Авторизован {name}</h1>
                 <!-- END BLOCK : admin_greeting --> 
         
                 /* Подключения всех всплывающих окошек */
