@@ -62,7 +62,7 @@ function m_list_transactions($argv = array())
         }
     }
 
-    $tpl->assign("moneys_in_stock", array('total' => $total_sum, 'total_usd' => $total_sum_usd));
+    $tpl->assign("moneys_in_stock", array('total' => (float)$total_sum, 'total_usd' => (float)$total_sum_usd));
 
     if (!$total_sum && !$total_sum_usd) {
         $tpl->assign("no_money");

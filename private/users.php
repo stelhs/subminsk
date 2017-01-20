@@ -19,7 +19,7 @@ function user_get_by_id($id)
 function user_get_by_pass($username, $password)
 {
     $query = "SELECT * FROM users " .
-                    'WHERE `name` = "' . addslashes($username) . '" ' . 
+                    'WHERE `login` = "' . addslashes($username) . '" ' . 
                     'AND `pass` = PASSWORD("' . addslashes($password) . '")';
     $result = db_query($query);
     
@@ -41,13 +41,14 @@ function users_get_list()
     return $users;
 }
 
-function user_change_pass($user_id, $new_pass)
+function user_change_pass($user_id, $new_login, $new_pass)
 {
     if (!is_numeric($user_id) || !isset($user_id) || !$new_pass)
         return EINVAL;
 
     $query = "UPDATE users " .
-                    'SET `pass` = PASSWORD("' . $new_pass . '") ' .
+                    'SET login = "' . $new_login . '", ' .
+                    '`pass` = PASSWORD("' . $new_pass . '") ' .
                     'WHERE id = '. (int)$user_id;
 
     $result = db_query($query);

@@ -237,15 +237,16 @@ if(isset($_POST['post_query']))
             if(!$admin)
                 continue;
             
+            $new_login = addslashes($_POST['login']);
             $new_pass = addslashes($_POST['new_pass']);
             $new_pass_repeate = addslashes($_POST['new_pass_repeate']);
-            if (!$new_pass || ($new_pass != $new_pass_repeate)) {
+            if (!$new_pass || !$new_login || ($new_pass != $new_pass_repeate)) {
                 message_box_display("message_einval");
                 header('Location: index.php?mod=cabinet');
                 break;
             }
 
-            $rc = user_change_pass($admin, $new_pass);
+            $rc = user_change_pass($admin, $new_login, $new_pass);
             if ($rc < 0) {
                     message_box_display("message_esql");
                     header('Location: index.php?mod=cabinet');
