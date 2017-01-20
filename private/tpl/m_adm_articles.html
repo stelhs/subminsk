@@ -1,0 +1,134 @@
+/* Шаблон раздела редактирования статей в режиме администрирования */
+
+/* отображение списка статей */
+<!-- START BLOCK : articles_list -->
+ <div align="center">
+                    <div style="margin: 50px; width: 600px;">
+                        <table border="1">
+                            <tr>
+                                <th>Id</th>
+                                <th>Key</th>
+                                <th>Title page</th>
+                                <th>Name</th>
+                                <th>Contents</th>
+                                <th>Public</th>
+                            </tr>
+                            <!-- START BLOCK : articles_row_table -->
+                                <tr>
+                                    <td>{id}</td>
+                                    <td>{key}</td>
+                                    <td>{page_title}</td>
+                                    <td>{name}</td>
+                                    <td>{contents}</td>
+                                    <td>{public}</td>
+                                    <td>
+                                        <a href="index.php?mod=adm_articles&mode=edit_article&id={id}">
+                                            <img src="{http_img}edit.jpg">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="exchange.php?mod=adm_articles&get_query=del_article&article_id={id}"
+                                        onClick="return window.confirm('Вы действительно хотите удалить статью?')">
+                                            <img src="{http_img}delete.jpg">
+                                        </a>
+                                    </td>
+                                </tr>
+                            <!-- END BLOCK : articles_row_table -->
+                        </table>
+                        <br/>
+                        <br/>
+                           <a href="index.php?mod=adm_articles&mode=add_article">Добавить статью</a> 
+                    </div>
+                </div>
+<!-- END BLOCK : articles_list -->
+
+
+/* редактировние статьи */
+<!-- START BLOCK : article_add_edit -->
+    <div align="center">
+        
+        <!-- START BLOCK : article_edit -->
+            <h3>Редактирование статьи id: {id}</h3>
+        <!-- END BLOCK : article_edit -->
+
+        
+        <!-- START BLOCK : article_add -->
+            <h3>Добавление статьи</h3>
+        <!-- END BLOCK : article_add -->
+	          <script>
+	               function check_fields() 
+	               {
+	                   var forma;
+	                   forma = document.getElementById("add_edit");
+	                   if (!forma.key.value)
+                           alert("Не введен key");
+	                   else
+	                	    if (!forma.page_title.value)
+	                	    	  alert("Не введен title");
+	                	    else 
+	                	    	  if (!forma.name.value)
+	                	    		  alert("Не введено название статьи");
+	                	    	  else 
+	                	    		  if (!forma.contents.value)
+	                	    			  alert("Не введено содержание статьи");
+	                	    		  else
+	                	    			    forma.submit();
+	               }
+	           </script>
+	           <div style="border: solid 2px black; margin: 10px; width:700px">
+	               <form name="form1" method="POST" action="{http_root}exchange.php" id="add_edit">
+	                   
+	                   <!-- START BLOCK : article_query_edit -->
+	                   <input type="hidden" name="post_query" value="article_edit">
+	                   <!-- END BLOCK : article_query_edit -->
+	                   
+	                   <!-- START BLOCK : article_query_add -->
+                       <input type="hidden" name="post_query" value="article_add">
+                       <!-- END BLOCK : article_query_add -->
+                       
+	                   <input type="hidden" name="article_id" value="{id}">
+	                   <table border="0" cellspacing="5" cellpadding="5">
+	                       <tr>
+	                           <td align="right" valign="top">Публиковать</td>
+	                           <td><input type="checkbox" name="public" value="public" {public} > </td>
+	                       </tr>
+	                       <tr>
+                               <td align="right" valign="top">Key</td>
+                               <td><input type="text" name="key" size="20" value="{key}" ></td>
+                           </tr>
+	                       
+	                       <tr>
+	                           <td align="right" valign="top">Title</td>
+	                           <td><input type="text" name="page_title" size="20" value="{page_title}" ></td>
+	                       </tr>
+	                       <tr>
+	                           <td align="right" valign="top">Название</td>
+	                           <td> <input type="text" name="name" size="20" value="{name}" ></td>
+	                       </tr>
+	                       <tr>
+	                           <td align="right" valign="top">Текст</td>
+	                           <td>
+	                                <textarea style="height:150px;width:500px;" name="contents">{contents}</textarea>
+	                       </tr>
+	                       <tr>
+                               
+                           <!-- START BLOCK : article_edit_submit -->
+	                            <td align="center" colspan="2">
+	                                <a href="javascript:;" onclick="check_fields()">Сохранить</a>
+	                            </td>
+                           <!-- END BLOCK : article_edit_submit -->   
+                                
+                           <!-- START BLOCK : article_add_submit -->
+                                <td align="center" colspan="2">
+                                    <a href="javascript:;" onclick="check_fields()">Добавить</a>
+                                </td>
+                           <!-- END BLOCK : article_add_submit --> 
+                           
+                           </tr>
+                        </table>
+                    </form>
+                </div>
+             <input class="buttonSend" onclick="window.history.back();" type="button" value="Вернуться"/>
+    </div>
+ <!-- END BLOCK : article_add_edit -->
+

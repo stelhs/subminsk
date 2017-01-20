@@ -1,0 +1,27 @@
+/* Шаблон авторизации администратора */
+<!-- START BLOCK : adm_login -->
+        <div align="center">
+             <h3>Авторизация</h3>
+                <div id="login_form">
+                    <form name="form4" method="POST" action="exchange.php">
+                    <input type="hidden" name="post_query" value="adm_login">
+                    
+                        <table border="0" cellspacing="5" cellpadding="5">
+                            <tr>
+                                <td align="right" valign="top">Логин</td>
+                                <td> <input type="text" name="name" size="20"></td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top">Пароль</td>
+                                <td> <input type="password" name="password" size="20"></td>
+                            </tr>
+                            <tr>
+                                <td align="center" colspan="2">
+                                    <input type="submit" name="submit" value="Войти">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+               </div>
+        </div>
+<!-- END BLOCK : adm_login -->

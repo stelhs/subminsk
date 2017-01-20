@@ -1,0 +1,82 @@
+/* Шаблон всплывающих сообщения */
+
+<!-- START BLOCK : message_article_success_edit -->
+    <!-- START INSERT : message_box.html -->
+        <color>green</color>
+        <header>Поздравляем!</header>
+        <message>Статья с id: {article_id} успешно отредактирована!</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_article_success_edit -->
+
+<!-- START BLOCK : message_einval -->
+    <!-- START INSERT : message_box.html -->
+        <color>red</color>
+        <header>Error</header>
+        <message>Ошибка входных параметров</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_einval -->
+
+<!-- START BLOCK : message_ebase -->
+    <!-- START INSERT : message_box.html -->
+        <color>red</color>
+        <header>Error</header>
+        <message>Ошибка связи с базой данных</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_ebase -->
+
+<!-- START BLOCK : message_esql -->
+    <!-- START INSERT : message_box.html -->
+        <color>red</color>
+        <header><div style="color: red">Error</div></header>
+        <message>Ошибка запроса</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_esql -->
+
+
+<!-- START BLOCK : message_article_success_add_new -->
+    <!-- START INSERT : message_box.html -->
+        <color>green</color>
+        <header>Поздравляем!</header>
+        <message>Статья с id: {article_id} успешно добавлена!</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_article_success_add_new -->
+
+<!-- START BLOCK : message_article_success_del -->
+    <!-- START INSERT : message_box.html -->
+        <color>green</color>
+        <header>Поздравляем!</header>
+        <message>Статья с id: {article_id} успешно удалена!</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_article_success_del -->
+
+<!-- START BLOCK : message_adm_login_incorrect -->
+    <!-- START INSERT : message_box.html -->
+        <color>red</color>
+        <header>EROR</header>
+        <message>Неверно введен логин и/или пароль</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_adm_login_incorrect -->
+
+<!-- START BLOCK : message_transaction_success -->
+    <!-- START INSERT : message_box.html -->
+        <color>green</color>
+        <header>Получилось</header>
+        <message>Транзакция прошла успешно. ID транзакции: {id}</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_transaction_success -->
+
+<!-- START BLOCK : message_pledged_success -->
+    <!-- START INSERT : message_box.html -->
+        <color>green</color>
+        <header>Получилось</header>
+        <message>Объявление о взносе опубликованно ID: {id}</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_pledged_success -->
+
+<!-- START BLOCK : message_debt_removed -->
+    <!-- START INSERT : message_box.html -->
+        <color>green</color>
+        <header>Поздравляем</header>
+        <message>Транзакция {id} по списанию долга с {name} прошла успешно</message>
+    <!-- END INSERT : message_box.html -->
+<!-- END BLOCK : message_debt_removed -->

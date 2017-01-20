@@ -1,0 +1,155 @@
+body
+{
+    padding : 0;
+    margin : 0;
+    background-color: black;
+    color: #AAAAAA;
+    font-family: "Bitstream Vera Sans","Lucida Sans Unicode","Lucida Grande",Arial;
+}
+
+*
+{
+	font-size: 12px;
+}
+
+h1
+{
+    font-size: 16px;
+    letter-spacing: -0.8pt; 
+    font-weight:normal;
+    text-align: center;
+}
+
+h2
+{
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+table
+{
+    padding:0;
+    margin:0;
+    border-collapse:separate;
+    border-spacing:0;
+    empty-cells:show;
+    table-layout:auto;
+}
+
+td
+{
+    padding : 0;
+    text-align : left;
+    vertical-align : top;
+}
+
+a:link, a:visited 
+{ 
+    color:#AAAAAA;
+    text-decoration:none;
+    border: solid 1px #AAAAAA;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+}
+
+a:active, a:hover
+{
+    color:#FFFFFF;
+    border: solid 1px #FFFFFF;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+}
+
+form
+{
+    margin: 15px;
+    padding:0;
+    clear: both;
+}
+
+form input, textarea {
+    background-color: black;
+    color: #AAAAAA;
+    border: 1px solid #AAAAAA;
+}    
+
+img
+{
+    border:0;
+}
+
+ul
+{
+    padding:0;
+}
+
+
+#header {
+	height: 100px;
+	margin: 10px auto;
+}
+
+#header_logo {
+    float: left;
+}
+
+#container {
+	 width: 100%;
+	 margin: 0 auto;
+	 border: solid #AAAAAA 1px;
+}
+
+ul.menu {
+    text-align: right;
+	display: block;
+	margin: 0 auto;
+	padding: 25 10 10 91px;
+    list-style-type: none
+}
+
+ul.menu li { 
+	display: inline; 
+	padding: 20px;
+}
+	
+ul.menu li a:link, ul.menu li a:visited, ul.menu li a:active {
+    border: 1px solid #AAAAAA;
+    padding: 5px 15px 1px 15px;
+	text-decoration: none;
+    color:   #AAAAAA;
+}
+ul.menu li a:hover {
+	border: 1px solid #ffffff;
+	padding: 5px 15px 1px 15px;
+	text-decoration: none;
+    color:   #FFFFFF;
+}
+
+.content {
+	min-height: 650px;
+}
+
+#transaction_table table {
+    border-collapse: collapse;
+    border: 1px solid #AAAAAA;
+}
+
+#transaction_table td, th {
+    border: 1px solid #AAAAAA;
+    padding: 5px;
+    text-align: center;
+}
+
+#login_form {
+    border: solid 2px #AAAAAA;
+    margin: 10px;
+    width: 300px;
+}
+
+#login_form table {
+    border-spacing: 5px;
+}
+

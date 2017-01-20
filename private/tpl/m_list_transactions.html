@@ -1,0 +1,254 @@
+/* шаблон оформляющий внешний вид списка транзакций */
+
+<!-- START BLOCK : list_my_debts -->
+    <h3 style="color: red">Напоминаем, что у вас имеются долги!</h3>
+    <div id="transaction_table">
+        <table>
+            <tr>
+                <th>Номер</th>
+                <th>Кому должен</th>
+                <th colspan="2">Сумма</th>
+                <th>Дата одалживания</th>
+                <th>Причина занимания</th>
+                <th>Дата транзакции</th>
+            </tr>
+            <!-- START BLOCK : row_my_debt -->
+                <tr>
+                    <td>{id}</td>
+                    <td>{who}</td>
+                    <td>{sum}р</td>
+                    <td>{sum_usd}$</td>
+                    <td>{date}</td>
+                    <td>{reason}</td>
+                    <td>{created}</td>
+                </tr>
+            <!-- END BLOCK : row_my_debt -->
+        </table>    
+    </div>
+<!-- END BLOCK : list_my_debts -->
+
+<!-- START BLOCK : list_me_debts -->
+    <h3>Напоминаем, что кое кто вам должен!</h3>
+    <div id="transaction_table">
+        <table>
+            <tr>
+                <th>Номер</th>
+                <th>Кто должен</th>
+                <th colspan="2">Сумма</th>
+                <th>Дата одалживания</th>
+                <th>Причина одалживания</th>
+                <th>Дата транзакции</th>
+                <th>Принял деньги</th>
+            </tr>
+            <!-- START BLOCK : row_me_debt -->
+                <tr>
+                    <td>{id}</td>
+                    <td>{whom}</td>
+                    <td>{sum}р</td>
+                    <td>{sum_usd}$</td>
+                    <td>{date}</td>
+                    <td>{reason}</td>
+                    <td>{created}</td>
+                    <td><a href="{http_root}exchange.php?get_query=del_debt&id={id}">Подтвердить</a></td>
+                </tr>
+            <!-- END BLOCK : row_me_debt -->
+        </table>    
+    </div>
+<!-- END BLOCK : list_me_debts -->
+
+
+<!-- START BLOCK : moneys_in_stock -->
+    <h4>На данный момент в Underminsk'е в наличии: {total}р и {total_usd}$</h4>
+<!-- END BLOCK : moneys_in_stock -->
+
+<!-- START BLOCK : no_money -->
+    <h4>К сожалению бобла совершенно нет. Срочно несем бабос в казну. Казна у Саба. </h4>
+<!-- END BLOCK : no_money -->
+
+<!-- START BLOCK : list_transaction -->
+
+    <!-- START BLOCK : moneys_was -->
+        А когдато бабос был!<br>
+    <!-- END BLOCK : moneys_was -->
+
+    Денежные транзакции:<br>
+    <div id="transaction_table">
+        <table>
+            <tr>
+                <th>Номер</th>
+                <th>Дата транзакции</th>
+                <th>Дата передачи денег</th>
+                <th>Пользователь</th>
+                <th colspan="2">Сумма</th>
+                <th colspan="2">Всего</th>
+                <th>Причина</th>
+                <th>Добавил</th>
+            </tr>
+            <!-- START BLOCK : transaction -->
+                <!-- START BLOCK : transaction_increase -->
+                    <tr style="font-weight: bold">
+                        <td>{id}</td>
+                        <td>{created}</td>
+                        <td>{date}</td>
+                        <td>{user}</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{sum}р</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{sum_usd}$</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{total}р</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{total_usd}$</td>
+                        <td>{reason}</td>
+                        <td>{author}</td>
+                    </tr>
+                <!-- END BLOCK : transaction_increase -->
+                <!-- START BLOCK : transaction_decrease -->
+                    <tr style="color: #FF0000">
+                        <td>{id}</td>
+                        <td>{created}</td>
+                        <td>{date}</td>
+                        <td>{user}</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{sum}р</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{sum_usd}$</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{total}р</td>
+                        <td style="padding-left: 20px; padding-right: 20px;">{total_usd}$</td>
+                        <td>{reason}</td>
+                        <td>{author}</td>
+                    </tr>
+                <!-- END BLOCK : transaction_decrease -->
+            <!-- END BLOCK : transaction -->
+        </table>
+    </div>
+<!-- END BLOCK : list_transaction -->
+
+<!-- START BLOCK : transaction_add -->
+    <div align="center">
+        <script>
+            $(function()
+            {
+                $( "#transaction_date" ).datepicker({ dateFormat: "yy-mm-dd" });
+            });
+
+           function form1_check_fields() 
+           {
+               var forma;
+               forma = document.getElementById("transaction_add");
+               if (forma.sum.value == 0 && forma.sum_usd.value == 0)
+                   alert("Сумма не введена или равна нулю");
+               else if ((forma.sum.value > 0 && forma.sum_usd.value < 0) || (forma.sum.value < 0 && forma.sum_usd.value > 0))
+                   alert("Нелья за одну транзакцию осуществить и пополнение и списание");
+               else if (!forma.reason.value)
+                   alert("Нужно ввести объяснение причины пополнения или списания");
+               else if (!forma.date.value)
+                   alert("Важно определить дату операции");
+               else 
+                   forma.submit();
+           }
+        </script>
+        <div style="border: solid 2px #AAAAAA; margin: 10px; width:700px">
+            <h2>Провести транзакцию</h2>
+            <form name="form1" method="POST" action="{http_root}exchange.php" id="transaction_add">
+                <input type="hidden" name="post_query" value="transaction_add">                     
+                <table border="0" cellspacing="5" cellpadding="5">
+                    <tr>
+                        <td align="right" valign="top">Сумма в рублях</td>
+                        <td><input type="text" name="sum" size="4" value="{sum}" ></td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Сумма в USD</td>
+                        <td><input type="text" name="sum_usd" size="4" value="{sum_usd}" ></td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Кто взнес/списал</td>
+                        <td>
+                            <select name="payer_id">
+                                <option value="0">Underminsk</option>
+                                <!-- START BLOCK : select_payer_id -->
+                                    <option value="{id}" {selected}>{name}</option>
+                                <!-- END BLOCK : select_payer_id -->
+                            </select>
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td align="right" valign="top">За счет кого</td>
+                        <td>
+                            <select name="by_debtor_id">
+                                <option value=""></option>
+                                <!-- START BLOCK : select_by_debtor_id -->
+                                    <option value="{id}" {selected}>{name}</option>
+                                <!-- END BLOCK : select_by_debtor_id -->
+                            </select>
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <td align="right" valign="top">Описание причины проведения транзакции</td>
+                        <td>
+                            <textarea style="height:150px;width:500px;" name="reason">{contents}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Дата операции</td>
+                        <td><input style="width:150px;" type="text" name="date" value='{date}' id="transaction_date"></td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="2">
+                            <a href="javascript:;" onclick="form1_check_fields()">Добавить</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+ <!-- END BLOCK : transaction_add -->
+
+ <!-- START BLOCK : pledged_add -->
+    <div align="center">
+        <script>
+            $(function()
+            {
+                $( "#transaction_date" ).datepicker({ dateFormat: "yy-mm-dd" });
+            });
+
+           function form2_check_fields() 
+           {
+               var forma;
+               forma = document.getElementById("pledged_add");
+               if (forma.sum.value == 0 && forma.sum_usd.value == 0)
+                   alert("Сумма не введена или равна нулю");
+               else if (forma.sum.value < 0 || forma.sum_usd.value < 0)
+                   alert("Отрицательная сумма не допустима");
+               else if (forma.sum.value > 0 && forma.sum_usd.value > 0)
+                   alert("Недопустимо объвлять о взносе в двух валютах одновременно");
+               else if (!forma.reason.value)
+                   alert("Нужно ввести объяснение причины пополнения или списания");
+               else 
+                   forma.submit();
+           }
+        </script>
+        <div style="border: solid 2px #AAAAAA; margin: 10px; width:700px">
+            <h2>Объявить взнос</h2>
+            <form name="form2" method="POST" action="{http_root}exchange.php" id="pledged_add">
+                <input type="hidden" name="post_query" value="pledged_add">
+                <input type="hidden" name="author_id" value="{author_id}">
+                <table border="0" cellspacing="5" cellpadding="5">
+                    <tr>
+                        <td align="right" valign="top">Сумма в рублях</td>
+                        <td><input type="text" name="sum" size="4" value="{sum}" ></td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Сумма в USD</td>
+                        <td><input type="text" name="sum_usd" size="4" value="{sum_usd}" ></td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Описание причины взноса</td>
+                        <td>
+                            <textarea style="height:150px;width:500px;" name="reason">{contents}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="2">
+                            <a href="javascript:;" onclick="form2_check_fields()">Объявить</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+ <!-- END BLOCK : pledged_add -->
