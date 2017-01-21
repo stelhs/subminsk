@@ -9,7 +9,10 @@ require_once("common/base_sql.php"); //файл для работы с базо�
  * @param $array_params - массив с данными
  * @param [sum] - сумма
  * @param [sum_usd] - сумма в USD
- * @param [user_id] - ID пользователя
+ * @param [total] - общая сумма до транзакции
+ * @param [total_usd] - общая сумма до транзакции в USD
+ * @param [payer_id] - ID пользователя благодаря которому была осуществлена транзакция
+ * @param [author_id] - ID пользователя благодаря которому была осуществлена транзакция
  * @param [reason] - причина транзакции
  * @param [date] - дата транзакции
  * @return EINVAL в случае ошибки входных параметров
@@ -21,7 +24,7 @@ function transactions_insert($array_params)
     $data = array();
 
     /*  выбираем только нужные поля */
-    $fields = array('sum', 'sum_usd', 'payer_id', 'reason', 'date');
+    $fields = array('sum', 'sum_usd', 'total', 'total_usd', 'payer_id', 'author_id', 'reason', 'date');
     foreach ($array_params as $key => $value)
         if (in_array($key, $fields))
             $data[$key] = $value;
@@ -86,11 +89,32 @@ function debts_insert($array_params)
     return db_insert('debts', $data); 
 }
 
+
 function transactions_get_list()
 {
     $query = "SELECT * FROM transactions ORDER BY created DESC";
     return db_query($query);
 }
+
+/*
+   Посчитать сумму по всем транзакциям
+ * @return EINVAL в случае ошибки входных параметров
+ * @return ESQL в случае некорретного sql запроса
+ * @return array(sum, sum_usd) в случае успешного добавления    
+*/
+function transactions_calc_sum()
+{
+    $query = "SELECT sum(sum) as total, " .
+                     "sum(sum_usd) as total_usd " .
+                     "FROM transactions ";
+    $result = db_query($query);
+    
+    if ($result == FALSE)
+        return ESQL;
+    else 
+        return $result[0];
+}
+
 
 function debts_get_list($filter = '')
 {
@@ -148,6 +172,7 @@ function debt_change_sum($id, $new_sum, $new_sum_usd)
  * @param [sum] - сумма в рублях
  * @param [sum_usd] - сумма в USD
  * @param [reason] - причина взноса
+ * @param [except] - список ID пользователей исключенных из взноса
  * @return EINVAL в случае ошибки входных параметров
  * @return ESQL в случае некорретного sql запроса
  * @return id в случае успешного добавления
@@ -157,7 +182,7 @@ function pledged_insert($array_params)
     $data = array();
 
     /*  выбираем только нужные поля */
-    $fields = array('author_id', 'sum', 'sum_usd', 'reason');
+    $fields = array('author_id', 'sum', 'sum_usd', 'reason', 'except');
     foreach ($array_params as $key => $value)
         if (in_array($key, $fields))
             $data[$key] = $value;

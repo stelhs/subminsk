@@ -35,7 +35,6 @@ function m_list_transactions($argv = array())
     $transactions = transactions_get_list();
     if (is_array($transactions) && count($transactions)) {
         $tpl->assign("list_transaction");
-        $total_sum = $total_sum_usd = 0;
         $row_count = 0;
         foreach ($transactions as $transaction) {
             $tpl->assign("transaction");
@@ -46,13 +45,8 @@ function m_list_transactions($argv = array())
             if ($transaction['sum_usd'] && $transaction['sum_usd'] > 0)
                 $positive = 1;
 
-            $total_sum += $transaction['sum'];
-            $total_sum_usd += $transaction['sum_usd'];
-
             $positive ? $row_color = "transaction_increase" : $row_color = "transaction_decrease";
 
-            $transaction['total'] = $total_sum;
-            $transaction['total_usd'] = $total_sum_usd;
             $transaction['user'] = $users[$transaction['payer_id']]['name'];
             if ($transaction['payer_id'] == 0)
                 $transaction['user'] = 'Underminsk';
@@ -62,9 +56,10 @@ function m_list_transactions($argv = array())
         }
     }
 
-    $tpl->assign("moneys_in_stock", array('total' => (float)$total_sum, 'total_usd' => (float)$total_sum_usd));
+    $sum_data = transactions_calc_sum();
+    $tpl->assign("moneys_in_stock", array('total' => (float)$sum_data['total'], 'total_usd' => (float)$sum_data['total_usd']));
 
-    if (!$total_sum && !$total_sum_usd) {
+    if (!$sum_data['total'] && !$sum_data['total_usd']) {
         $tpl->assign("no_money");
         if ($row_count)
             $tpl->assign("moneys_was");
@@ -78,6 +73,7 @@ function m_list_transactions($argv = array())
         foreach ($users as $user) { 
             $tpl->assign("select_payer_id", $user);
             $tpl->assign("select_by_debtor_id", $user);
+            $tpl->assign("pledged_except_user", $user);
         }
     }
 

@@ -95,15 +95,12 @@ if(isset($_POST['post_query']))
             if ($sum_usd && $sum_usd > 0)
                 $positive = 1;
 
-            /* Underminsk can`t make contribution */
-            if ($positive && $payer_id == 0) {
-                message_box_display("message_einval");
-                header('Location: index.php?mod=list_transactions');
-                break;
-            }
+            $sum_data = transactions_calc_sum();
 
             $transaction_id = transactions_insert(array('sum' => $sum,
                                                         'sum_usd' => $sum_usd,
+                                                        'total' => $sum_data['total'],
+                                                        'total_usd' => $sum_data['total_usd'],
                                                         'payer_id' => $payer_id,
                                                         'reason' => $reason,
                                                         'author_id' => $admin,
@@ -120,7 +117,7 @@ if(isset($_POST['post_query']))
             $debt_sum_usd = $sum_usd;
 
             /* Search for minimal debt in RUB */
-            $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum > 0 AND whom_id = ' . $admin);
+            $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum > 0 AND whom_id = ' . $payer_id);
             if (is_array($debts) && count($debts)) {
                 foreach ($debts as $debt) {
                     if (($debt['sum'] > 0) && ($debt['sum'] <= $debt_sum)) {
@@ -132,7 +129,7 @@ if(isset($_POST['post_query']))
                     }
                 }
 
-                $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum > 0 AND whom_id = ' . $admin);
+                $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum > 0 AND whom_id = ' . $payer_id);
                 if ($debt_sum) {
                     foreach ($debts as $debt) {
                         debt_change_sum($debt['id'], $debt['sum'] - $debt_sum, 0);
@@ -142,7 +139,7 @@ if(isset($_POST['post_query']))
             }
 
             /* Search for minimal debt in USD */
-            $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum_usd > 0 AND whom_id = ' . $admin);
+            $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum_usd > 0 AND whom_id = ' . $payer_id);
             if (is_array($debts) && count($debts)) {
                 /* Search for minimal debt in USD */
                 foreach ($debts as $debt) {
@@ -154,7 +151,7 @@ if(isset($_POST['post_query']))
                     }
                 }
 
-                $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum_usd > 0 AND whom_id = ' . $admin);
+                $debts = debts_get_list('repaid = 0 AND who_id = 0 AND sum_usd > 0 AND whom_id = ' . $payer_id);
                 if ($debt_sum_usd) {
                     foreach ($debts as $debt) {
                         dump($debt);
@@ -193,6 +190,7 @@ if(isset($_POST['post_query']))
             $sum_usd = (int)$_POST['sum_usd'];
             $author_id = (int)$_POST['author_id'];
             $reason = addslashes($_POST['reason']);
+            $list_except_users = $_POST['pledged_except_user'];
 
             if (($sum <= 0 && $sum_usd <= 0) || !$author_id) {
                 message_box_display("message_einval");
@@ -200,18 +198,29 @@ if(isset($_POST['post_query']))
                 break;
             }
 
+            $except_string = "";
+            $separator = "";
+            if ($list_except_users)
+                foreach ($list_except_users as $user_id => $v) {
+                    $except_string .= $separator . "'" .$user_id . "'";
+                    $separator = ',';
+                }
+
             $pledged_id = pledged_insert(array('author_id' => $author_id,
                                                'sum' => $sum,
                                                'sum_usd' => $sum_usd,
-                                               'reason' => $reason));
+                                               'reason' => $reason,
+                                               'except' => $except_string));
 
             foreach ($users as $user) {
-                 $debt_id = debts_insert(array('who_id' => 0,
-                                               'whom_id' => $user['id'],
-                                               'sum' => $sum,
-                                               'sum_usd' => $sum_usd,
-                                               'reason' => $reason,
-                                               'date' => date('Y-m-d')));
+                if (isset($list_except_users[$user['id']]))
+                    continue;
+                $debt_id = debts_insert(array('who_id' => 0,
+                                              'whom_id' => $user['id'],
+                                              'sum' => $sum,
+                                              'sum_usd' => $sum_usd,
+                                              'reason' => $reason,
+                                              'date' => date('Y-m-d')));
             }
 
             message_box_display("message_pledged_success", array('id' => $pledged_id));

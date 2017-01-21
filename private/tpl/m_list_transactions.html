@@ -80,7 +80,7 @@
                 <th>Дата передачи денег</th>
                 <th>Пользователь</th>
                 <th colspan="2">Сумма</th>
-                <th colspan="2">Всего</th>
+                <th colspan="2">Всего до транзакции</th>
                 <th>Причина</th>
                 <th>Добавил</th>
             </tr>
@@ -95,7 +95,7 @@
                         <td style="padding-left: 20px; padding-right: 20px;">{sum_usd}$</td>
                         <td style="padding-left: 20px; padding-right: 20px;">{total}р</td>
                         <td style="padding-left: 20px; padding-right: 20px;">{total_usd}$</td>
-                        <td>{reason}</td>
+                        <td style="max-width: 200px;">{reason}</td>
                         <td>{author}</td>
                     </tr>
                 <!-- END BLOCK : transaction_increase -->
@@ -109,7 +109,7 @@
                         <td style="padding-left: 20px; padding-right: 20px;">{sum_usd}$</td>
                         <td style="padding-left: 20px; padding-right: 20px;">{total}р</td>
                         <td style="padding-left: 20px; padding-right: 20px;">{total_usd}$</td>
-                        <td>{reason}</td>
+                        <td style="max-width: 200px;">{reason}</td>
                         <td>{author}</td>
                     </tr>
                 <!-- END BLOCK : transaction_decrease -->
@@ -157,7 +157,7 @@
                         <td><input type="text" name="sum_usd" size="4" value="{sum_usd}" ></td>
                     </tr>
                     <tr>
-                        <td align="right" valign="top">Кто взнес/списал</td>
+                        <td align="right" valign="top">Кто внес/списал</td>
                         <td>
                             <select name="payer_id">
                                 <option value="0">Underminsk</option>
@@ -168,7 +168,7 @@
                         </td>
                     </tr>                    
                     <tr>
-                        <td align="right" valign="top">За счет кого</td>
+                        <td align="right" valign="top">У кого одолжил</td>
                         <td>
                             <select name="by_debtor_id">
                                 <option value=""></option>
@@ -236,6 +236,14 @@
                         <td align="right" valign="top">Описание причины взноса</td>
                         <td>
                             <textarea style="height:150px;width:500px;" name="reason">{contents}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Исключить из взноса</td>
+                        <td>
+                            <!-- START BLOCK : pledged_except_user -->
+                                <input type="checkbox" name="pledged_except_user[{id}]"> {name}<br>
+                            <!-- END BLOCK : pledged_except_user -->
                         </td>
                     </tr>
                     <tr>
