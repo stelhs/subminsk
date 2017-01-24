@@ -75,8 +75,8 @@ if(isset($_POST['post_query']))
         	if(!$admin)
                 continue;
 
-            $sum = (int)$_POST['sum'];
-            $sum_usd = (int)$_POST['sum_usd'];
+            $sum = (float)$_POST['sum'];
+            $sum_usd = (float)$_POST['sum_usd'];
             $payer_id = (int)$_POST['payer_id'];
             $by_debtor_id = (int)$_POST['by_debtor_id'];
             $reason = addslashes($_POST['reason']);
@@ -186,8 +186,8 @@ if(isset($_POST['post_query']))
             if(!$admin)
                 continue;
 
-            $sum = (int)$_POST['sum'];
-            $sum_usd = (int)$_POST['sum_usd'];
+            $sum = (float)$_POST['sum'];
+            $sum_usd = (float)$_POST['sum_usd'];
             $author_id = (int)$_POST['author_id'];
             $reason = addslashes($_POST['reason']);
             $list_except_users = $_POST['pledged_except_user'];
