@@ -143,22 +143,21 @@ ul.menu li a:hover {
 #login_form table {
     border-spacing: 5px;
 }
-
-/*#s_button_black a:link, a:visited 
-{ 
-    color: #AAAAAA;
-    text-decoration:none;
-    border: solid 1px #AAAAAA;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin: 5px;
-}*/
-
-#s_button_black a:active, a:hover, a:link, a:visited 
+.s_button_black a:active, a:link, a:visited 
 {
-    color:#FFFFFF;
-    border: solid 1px #FFFFFF;
+    color:#aaaaaa;
+    border: solid 1px #aaaaaa;
     padding-left: 10px;
     padding-right: 10px;
     margin: 5px;
 }
+
+.s_button_black a:hover{
+  color: #ffffff;
+    text-decoration:none;
+    border: solid 1px #ffffff;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+}
+

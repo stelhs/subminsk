@@ -49,7 +49,7 @@
                     <td>{date}</td>
                     <td>{reason}</td>
                     <td>{created}</td>
-                    <td><a href="{http_root}exchange.php?get_query=del_debt&id={id}" id="s_button_black" onclick="if(confirm('Подтвердить возврат долга ?'))return true; else return false;">Подтвердить</a></td>
+                    <td><div class="s_button_black"><a href="{http_root}exchange.php?get_query=del_debt&id={id}" id="s_button_black" onclick="if(confirm('Подтвердить возврат долга ?'))return true; else return false;">Подтвердить</a></div></td>
                 </tr>
             <!-- END BLOCK : row_me_debt -->
         </table>    
@@ -190,7 +190,9 @@
                     </tr>
                     <tr>
                         <td align="center" colspan="2">
-                            <a href="javascript:;" onclick="form1_check_fields()" id="s_button_black">Добавить</a>
+			<div class="s_button_black">
+                            <a href="javascript:;" onclick="form1_check_fields()" >Добавить</a>
+			</div>
                         </td>
                     </tr>
                 </table>
@@ -248,7 +250,9 @@
                     </tr>
                     <tr>
                         <td align="center" colspan="2">
-                            <a href="javascript:;" onclick="form2_check_fields()" id="s_button_black">Объявить</a>
+			<div class="s_button_black">
+                            <a href="javascript:;" onclick="form2_check_fields()" class="s_button_black">Объявить</a>
+			</div>
                         </td>
                     </tr>
                 </table>
