@@ -12,7 +12,7 @@ function user_get_by_id($id)
 function user_get_by_pass($login, $pass)
 {
     $query = "SELECT * FROM users WHERE `login` = '" . $login .
-                "' AND `pass` = '" . $pass ."'";
+                "' AND `pass` = PASSWORD('" . $pass ."')";
     return db()->query($query);
 }
 

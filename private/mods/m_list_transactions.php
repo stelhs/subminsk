@@ -3,7 +3,8 @@
 
 function m_list_transactions($argv = array())
 {
-    $tpl = new strontium_tpl("private/tpl/m_list_transactions.html", array(), false);
+    $tpl = new strontium_tpl("private/tpl/m_list_transactions.html",
+                             global_conf()['global_marks'], false);
     $admin_id = auth_get_admin();
     $users = users_get_list();
 

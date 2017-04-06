@@ -5,7 +5,7 @@ function m_adm_articles($argv = array())
 {
 	global $global_marks;
 	$tpl = new strontium_tpl("private/tpl/m_adm_articles.html",
-                             $global_marks, false); 
+                             global_conf()['global_marks'], false); 
 
     $mode = 'list_articles';
 	if(isset($argv['mode']))

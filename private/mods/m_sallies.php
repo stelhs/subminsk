@@ -3,7 +3,8 @@
 
 function m_sallies($argv = array())
 {
-    $tpl = new strontium_tpl("private/tpl/m_sallies.html", array(), false);
+    $tpl = new strontium_tpl("private/tpl/m_sallies.html", 
+                             global_conf()['global_marks'], false);
     $admin_id = auth_get_admin();
     $users = users_get_list();
     $sally_id = (int)$argv['id'];

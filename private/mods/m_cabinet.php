@@ -3,7 +3,8 @@
 
 function m_cabinet($argv = array())
 {
-    $tpl = new strontium_tpl("private/tpl/m_cabinet.html", array(), false);
+    $tpl = new strontium_tpl("private/tpl/m_cabinet.html", 
+                             global_conf()['global_marks'], false);
     $admin_id = auth_get_admin();
     $users = users_get_list();
     $user = $users[$admin_id];
