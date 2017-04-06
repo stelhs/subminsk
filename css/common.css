@@ -134,6 +134,18 @@ ul.menu li a:hover {
     text-align: center;
 }
 
+#sallies_table table {
+    border-collapse: collapse;
+    border: 1px solid #AAAAAA;
+}
+
+#sallies_table td, th {
+    border: 1px solid #AAAAAA;
+    padding: 5px;
+    text-align: center;
+}
+
+
 #login_form {
     border: solid 2px #AAAAAA;
     margin: 10px;
@@ -160,4 +172,5 @@ ul.menu li a:hover {
     padding-right: 10px;
     margin: 5px;
 }
+
 

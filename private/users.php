@@ -1,44 +1,26 @@
 <?php
 
-require_once("common/base_sql.php"); //файл для работы с базой даных
 
+/* Возвращает информацию о пользователе по id */
 function user_get_by_id($id)
 {
-    if (!is_numeric($id) || !isset($id))
-        return EINVAL;
-    
     $query = "SELECT * FROM users WHERE id = " . $id;
-    $result = db_query($query);
-    
-    if ($result == FALSE)
-        return ESQL;
-    else 
-        return $result[0];
+    return db()->query($query);
 }
 
-function user_get_by_pass($username, $password)
+/* Возвращает информацию о пользователе если совпадают логин и пароль */
+function user_get_by_pass($login, $pass)
 {
-    $query = "SELECT * FROM users " .
-                    'WHERE `login` = "' . addslashes($username) . '" ' . 
-                    'AND `pass` = PASSWORD("' . addslashes($password) . '")';
-    $result = db_query($query);
-    
-    if ($result == FALSE)  // если бд вернула 0 строк 
-        return ESQL;
-    else 
-        return $result[0];
+    $query = "SELECT * FROM users WHERE `login` = '" . $login .
+                "' AND `pass` = '" . $pass ."'";
+    return db()->query($query);
 }
 
 function users_get_list()
 {
     $query = "SELECT * FROM users";
     $users = array();
-    $rows = db_query($query);
-
-    foreach ($rows as $row)
-        $users[$row['id']] = $row;
-
-    return $users;
+    return db()->query_list($query);
 }
 
 function user_change_pass($user_id, $new_login, $new_pass)
@@ -51,7 +33,7 @@ function user_change_pass($user_id, $new_login, $new_pass)
                     '`pass` = PASSWORD("' . $new_pass . '") ' .
                     'WHERE id = '. (int)$user_id;
 
-    $result = db_query($query);
+    $result = db()->query($query);
 
     if ($result == FALSE)
         return ESQL;

@@ -2,8 +2,6 @@
 
 /* Функции для работа со статьями */
 
-require_once("common/base_sql.php"); //файл для работы с базой даных
-
 /**
  * добавляет транзакцию
  * @param $array_params - массив с данными
@@ -44,7 +42,7 @@ function transactions_insert($array_params)
         return EINVAL;    
     }
 
-    return db_insert('transactions', $data); 
+    return db()->insert('transactions', $data); 
 }
 
 
@@ -86,14 +84,14 @@ function debts_insert($array_params)
         return EINVAL;    
     }
 
-    return db_insert('debts', $data); 
+    return db()->insert('debts', $data); 
 }
 
 
 function transactions_get_list()
 {
     $query = "SELECT * FROM transactions ORDER BY created DESC";
-    return db_query($query);
+    return db()->query_list($query);
 }
 
 /*
@@ -107,7 +105,7 @@ function transactions_calc_sum()
     $query = "SELECT sum(sum) as total, " .
                      "sum(sum_usd) as total_usd " .
                      "FROM transactions ";
-    $result = db_query($query);
+    $result = db()->query($query);
     
     if ($result == FALSE)
         return ESQL;
@@ -124,7 +122,7 @@ function debts_get_list($filter = '')
         $query .= 'WHERE ' . $filter . ' ';
 
     $query .= " ORDER BY created DESC";
-    return db_query($query);
+    return db()->query_list($query);
 }
 
 function debt_get_by_id($id)
@@ -133,7 +131,7 @@ function debt_get_by_id($id)
         return EINVAL;
     
     $query = "SELECT * FROM debts WHERE id = " . $id;
-    $result = db_query($query);
+    $result = db()->query($query);
     
     if ($result == FALSE)
         return ESQL;
@@ -146,7 +144,7 @@ function debt_remove($id)
     if (!is_numeric($id) || !isset($id))
         return EINVAL;
 
-    return db_update('debts', $id, array('repaid' => '1'));
+    return db()->update('debts', $id, array('repaid' => '1'));
 }
 
 function debt_change_sum($id, $new_sum, $new_sum_usd)
@@ -161,7 +159,7 @@ function debt_change_sum($id, $new_sum, $new_sum_usd)
     if ($new_sum_usd)
         $set_arr['sum_usd'] = $new_sum_usd;
 
-    return db_update('debts', $id, $set_arr);
+    return db()->update('debts', $id, $set_arr);
 }
 
 
@@ -202,7 +200,7 @@ function pledged_insert($array_params)
         return EINVAL;    
     }
 
-    return db_insert('of_pledges', $data); 
+    return db()->insert('of_pledges', $data); 
 }
 
 
