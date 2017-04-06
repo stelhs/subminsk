@@ -386,7 +386,7 @@
                 preg_match("/<!-- *START +" . $block_type . " *: *([a-zA-Z0-9_\.\/]*) *-->/s",
                            $buffer, $found_blocks); 
 
-                $block_name = $found_blocks[1];
+                $block_name = isset($found_blocks[1]) ? $found_blocks[1] : false;
                 if($block_name) {
                      // Извлечение данных блока
                     $rc = preg_match("/<!-- *START +" . 
