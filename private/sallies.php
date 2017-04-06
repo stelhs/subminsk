@@ -8,6 +8,7 @@
  * @param $array_params - массив с данными
  * @param [date] - дата вылазки
  * @param [reason] - причина вылазки
+ * @param [description] - подробное описание вылазки
  * @param [need_to_take] - что нужно ссобой взять
  * @param [author_id] - ID пользователя благодаря которому была осуществлена транзакция
  * @return EINVAL в случае ошибки входных параметров
@@ -19,7 +20,7 @@ function sally_insert($array_params)
     $data = array();
 
     /*  выбираем только нужные поля */
-    $fields = array('need_to_take', 'author_id', 'reason', 'date');
+    $fields = array('description', 'need_to_take', 'author_id', 'reason', 'date');
     foreach ($array_params as $key => $value)
         if (in_array($key, $fields))
             $data[$key] = $value;
@@ -58,6 +59,7 @@ function sally_get_by_id($id)
  * @param $array_params - массив с данными для редактироания
  * @param [date] - дата вылазки
  * @param [reason] - причина вылазки
+ * @param [description] - подробное описание вылазки
  * @param [need_to_take] - что нужно ссобой взять
  * @param [author_id] - ID пользователя благодаря которому была осуществлена транзакция
  * @return EINVAL в случае ошибки входных параметров
@@ -67,7 +69,7 @@ function sally_get_by_id($id)
 function sally_update($id, $array_params)
 {
     /*  выбираем только нужные поля */
-    $fields = array('need_to_take', 'author_id', 'reason', 'date');
+    $fields = array('description', 'need_to_take', 'author_id', 'reason', 'date');
     foreach ($array_params as $key => $value)
         if (in_array($key, $fields))
             $data[$key] = $value;

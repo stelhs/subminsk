@@ -238,11 +238,13 @@ if(isset($_POST['post_query']))
                 continue;
 
             $reason = addslashes($_POST['reason']);
+            $description = addslashes($_POST['description']);
             $need_to_take = addslashes($_POST['need_to_take']);
             $date = $_POST['date'];
 
 
             $sally_id = sally_insert(array('reason' => $reason,
+                                           'description' => $description,
                                            'need_to_take' => $need_to_take,
                                            'author_id' => $admin,
                                            'date' => $date));
@@ -263,14 +265,16 @@ if(isset($_POST['post_query']))
                 continue;
 
             $reason = addslashes($_POST['reason']);
+            $description = addslashes($_POST['description']);
             $need_to_take = addslashes($_POST['need_to_take']);
             $date = $_POST['date'];
             $sally_id = (int)$_POST['sally_id'];
 
             sally_update($sally_id, array('reason' => $reason,
-                                           'need_to_take' => $need_to_take,
-                                           'author_id' => $admin,
-                                           'date' => $date));
+                                          'description' => $description,
+                                          'need_to_take' => $need_to_take,
+                                          'author_id' => $admin,
+                                          'date' => $date));
 
             message_box_display("message_sally_edit_success", array('id' => $sally_id));
             header('Location: ' . mk_url(array('mod' => 'sallies', 'id' => $sally_id)));
