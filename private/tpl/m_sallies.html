@@ -1,0 +1,92 @@
+/* шаблон оформляющий внешний вид раздела вылазки */
+
+<!-- START BLOCK : list_sallies -->
+    Денежные транзакции:<br>
+    <div id="sallies_table">
+        <table>
+            <tr>
+                <th>Номер</th>
+                <th>Дата создания</th>
+                <th>Дата вылазки</th>
+                <th>Причина</th>
+                <th>Добавил</th>
+            </tr>
+            <!-- START BLOCK : sally -->
+                <tr style="font-weight: bold">
+                    <td><a href="{link_to_detail}">{id}</a></td>
+                    <td><a href="{link_to_detail}">{created}</a></td>
+                    <td><a href="{link_to_detail}">{date}</a></td>
+                    <td style="max-width: 200px;">{reason}</td>
+                    <td>{author}</td>
+                </tr>
+            <!-- END BLOCK : sally -->
+        </table>
+    </div>
+    <br>
+<!-- END BLOCK : list_sallies -->
+
+<!-- START BLOCK : sally_add_edit -->
+    <div align="center">
+        <script>
+            $(function()
+            {
+                $( "#sally_date" ).datepicker({ dateFormat: "yy-mm-dd" });
+            });
+
+           function form1_check_fields() 
+           {
+               var forma;
+               forma = document.getElementById("sally_add");
+               if (!forma.reason.value)
+                   alert("Нужно ввести цель вылазки");
+               else if (!forma.date.value)
+                   alert("Важно определить дату вылазки");
+               else 
+                   forma.submit();
+           }
+        </script>
+        <div style="border: solid 2px #AAAAAA; margin: 10px; width:700px">
+            <!-- START BLOCK : sally_add_new_header -->
+                <h2>Создать вылазку</h2>
+            <!-- END BLOCK : sally_add_new_header -->
+            <!-- START BLOCK : sally_edit_header -->
+                <h2>Отредактировать вылазку</h2>
+            <!-- END BLOCK : sally_edit_header -->
+            <form name="form1" method="POST" action="{http_root}exchange.php" id="sally_add">
+                <input type="hidden" name="post_query" value="{post_query}">                     
+                <input type="hidden" name="sally_id" value="{id}">                     
+                <table border="0" cellspacing="5" cellpadding="5">
+                    <tr>
+                        <td align="right" valign="top">Цель вылазки</td>
+                        <td>
+                            <textarea style="height:50px;width:500px;" name="reason">{reason}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Что ссобой взять</td>
+                        <td>
+                            <textarea style="height:150px;width:500px;" name="need_to_take">{need_to_take}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">Дата на которую назначена вылазка</td>
+                        <td><input style="width:150px;" type="text" name="date" value='{date}' id="sally_date"></td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="2">
+                			<div class="s_button_black">
+                                <!-- START BLOCK : sally_add_button -->
+                                    <a href="javascript:;" onclick="form1_check_fields()" >Добавить</a>
+                                <!-- END BLOCK : sally_add_button -->
+                                <!-- START BLOCK : sally_edit_button -->
+                                    <a href="javascript:;" onclick="form1_check_fields()" >Отредактировать</a>
+                                <!-- END BLOCK : sally_edit_button -->
+			                </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+ <!-- END BLOCK : sally_add_edit -->
+

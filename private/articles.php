@@ -2,10 +2,6 @@
 
 /* Функции для работа со статьями */
 
-require_once("common/base_sql.php"); //файл для работы с базой даных
-$table_name = "articles";
-
-
 
 /**
  * Получить ассоциативный массив с данными записи с идентификатором $id
@@ -22,7 +18,7 @@ function article_get_by_id($id)
         return EINVAL;
     
     $query = "SELECT * FROM ". $table_name .  " WHERE id = " . $id;
-    $result = db_query($query);
+    $result = db()->query($query);
     
     if ($result == FALSE)  // если бд вернула 0 строк 
         return ESQL;
@@ -47,7 +43,7 @@ function article_get_by_key($key)
     }
     
     $query = "SELECT * FROM ". $table_name .  " WHERE `key` like \"" . $key .'"';
-    $result = db_query($query);
+    $result = db()->query($query);
     
     if ($result == FALSE)  // если бд вернула 0 строк 
         return ESQL;
@@ -104,7 +100,7 @@ function article_add_new($array_params)
         return EINVAL;    
     }
      else 
-        return db_insert($table_name, $data); 
+        return db()->insert($table_name, $data); 
     }
 
 
@@ -166,7 +162,7 @@ function article_edit($id, $array_params)
         return EINVAL;
     }
     
-    return db_update($table_name, $id, $data);
+    return db()->update($table_name, $id, $data);
 }
 
 
@@ -192,7 +188,7 @@ function article_del($id)
     }
 
     $query = "DELETE FROM ". $table_name . " WHERE id = " . $id;
-    return db_query($query);
+    return db()->query($query);
 }
 
 /**
@@ -206,7 +202,7 @@ function article_get_list()
 	global $table_name;
     
 	$query = "SELECT * FROM ". $table_name ;
-	return db_query($query);
+	return db()->query_list($query);
 }
 
 ?>

@@ -4,10 +4,15 @@
 require_once "private/common/debug.php";
 require_once "private/common/message_box.php";
 require_once "private/common/auth_adm.php";
+require_once "private/common/database.php";
+require_once "private/common/url.php";
 require_once "private/articles.php";
 require_once "private/users.php";
 require_once "private/transactions.php";
+require_once "private/sallies.php";
 require_once "private/init.php";
+require_once "private/clean_url.php";
+
 
 session_start();
 
@@ -40,7 +45,7 @@ if(isset($_POST['post_query']))
             		break;
             }
             message_box_display($block, $data);
-            header('Location: index.php?mod=adm_articles');
+            header('Location: ' . mk_url(array('mod' => 'adm_articles')));
             break;
             
         /* Добавление новой статьи */
@@ -66,7 +71,7 @@ if(isset($_POST['post_query']))
                     break;
             }
             message_box_display($block, $data);
-            header('Location: index.php?mod=adm_articles');
+            header('Location: ' . mk_url(array('mod' => 'adm_articles')));
             break;
 
         /* Добавление транзакции */
@@ -84,7 +89,7 @@ if(isset($_POST['post_query']))
 
             if (($sum > 0 && $sum_usd < 0) || ($sum < 0 && $sum_usd > 0)) {
                 message_box_display("message_einval");
-                header('Location: index.php?mod=list_transactions');
+                header('Location: ' . mk_url(array('mod' => 'list_transactions')));
                 break;
             }
 
@@ -108,7 +113,7 @@ if(isset($_POST['post_query']))
 
             if ($transaction_id < 0) {
                 message_box_display("message_esql");
-                header('Location: index.php?mod=list_transactions');
+                header('Location: ' . mk_url(array('mod' => 'list_transactions')));
                 break;
             }
 
@@ -171,13 +176,13 @@ if(isset($_POST['post_query']))
                                               'date' => $date));
                 if ($debt_id < 0) {
                     message_box_display("message_esql");
-                    header('Location: index.php?mod=list_transactions');
+                    header('Location: ' . mk_url(array('mod' => 'list_transactions')));
                     break;
                 }
             }
 
             message_box_display("message_transaction_success", array('id' => $transaction_id));
-            header('Location: index.php?mod=list_transactions');
+            header('Location: ' . mk_url(array('mod' => 'list_transactions')));
             break;
 
         case "pledged_add":
@@ -194,7 +199,7 @@ if(isset($_POST['post_query']))
 
             if (($sum <= 0 && $sum_usd <= 0) || !$author_id) {
                 message_box_display("message_einval");
-                header('Location: index.php?mod=list_transactions');
+                header('Location: ' . mk_url(array('mod' => 'list_transactions')));
                 break;
             }
 
@@ -224,7 +229,51 @@ if(isset($_POST['post_query']))
             }
 
             message_box_display("message_pledged_success", array('id' => $pledged_id));
-            header('Location: index.php?mod=list_transactions');
+            header('Location: ' . mk_url(array('mod' => 'list_transactions')));
+            break;
+
+        case "sally_add":
+            $admin = auth_get_admin();
+            if(!$admin)
+                continue;
+
+            $reason = addslashes($_POST['reason']);
+            $need_to_take = addslashes($_POST['need_to_take']);
+            $date = $_POST['date'];
+
+
+            $sally_id = sally_insert(array('reason' => $reason,
+                                           'need_to_take' => $need_to_take,
+                                           'author_id' => $admin,
+                                           'date' => $date));
+
+            if ($sally_id < 0) {
+                message_box_display("message_esql");
+                header('Location: index.php?mod=list_sallies');
+                break;
+            }
+
+            message_box_display("message_sally_add_success", array('id' => $sally_id));
+            header('Location: ' . mk_url(array('mod' => 'sallies', 'id' => $sally_id)));
+            break;
+
+        case "sally_edit":
+            $admin = auth_get_admin();
+            if(!$admin)
+                continue;
+
+            $reason = addslashes($_POST['reason']);
+            $need_to_take = addslashes($_POST['need_to_take']);
+            $date = $_POST['date'];
+            $sally_id = (int)$_POST['sally_id'];
+
+            sally_update($sally_id, array('reason' => $reason,
+                                           'need_to_take' => $need_to_take,
+                                           'author_id' => $admin,
+                                           'date' => $date));
+
+            message_box_display("message_sally_edit_success", array('id' => $sally_id));
+            header('Location: ' . mk_url(array('mod' => 'sallies', 'id' => $sally_id)));
             break;
 
     
@@ -237,7 +286,7 @@ if(isset($_POST['post_query']))
             }
             else {
                 message_box_display("message_adm_login_incorrect");
-                header( 'Location: index.php?mod=adm_login');
+                header('Location: ' . mk_url(array('mod' => 'adm_login')));
             }
             break;
 
@@ -251,30 +300,20 @@ if(isset($_POST['post_query']))
             $new_pass_repeate = addslashes($_POST['new_pass_repeate']);
             if (!$new_pass || !$new_login || ($new_pass != $new_pass_repeate)) {
                 message_box_display("message_einval");
-                header('Location: index.php?mod=cabinet');
+                header('Location: ' . mk_url(array('mod' => 'cabinet')));
                 break;
             }
 
             $rc = user_change_pass($admin, $new_login, $new_pass);
             if ($rc < 0) {
                     message_box_display("message_esql");
-                    header('Location: index.php?mod=cabinet');
+                    header('Location: ' . mk_url(array('mod' => 'cabinet')));
                     break;                
             }
 
             message_box_display("message_change_pass_success");
-            header('Location: index.php?mod=cabinet');            
+            header('Location: ' . mk_url(array('mod' => 'cabinet')));
             break;
-
-
-            /* Выбор списка продуктов по категории */
-        case "get_category":
-        	if(!isset($_POST["category_name"]))
-        	   $cat_id = 1;
-        	else
-        	$cat_id = $_POST["category_name"];
-        	header('Location: index.php?mod=adm_products&mode=list_products&cat_id='.$cat_id);
-        	break;
    }
 
 /* Обработчик GET запросов */
@@ -302,7 +341,7 @@ if(isset($_GET['get_query']))
                     break;                   
             }
             message_box_display($block, $data);
-            header('Location: index.php?mod=adm_articles');
+            header('Location: ' . mk_url(array('mod' => 'adm_articles')));
             break;
 
         /* Cписание долга */
@@ -318,20 +357,20 @@ if(isset($_GET['get_query']))
             $debt = debt_get_by_id($debt_id);
             if ($debt < 0 || !is_array($debt) || $admin_id != $debt['who_id']) {
                 message_box_display("message_esql");
-                header('Location: index.php?mod=list_transactions');
+                header('Location: ' . mk_url(array('mod' => 'list_transactions')));
                 break;
             }
 
             $rc = debt_remove($debt_id);
             if ($rc) {
                 message_box_display("message_esql");
-                header('Location: index.php?mod=list_transactions');
+                header('Location: ' . mk_url(array('mod' => 'list_transactions')));
                 break;
             }
 
             message_box_display('message_debt_removed', array('name' => $users[$debt['whom_id']]['name'],
                                                               'id' => $debt_id));
-            header('Location: index.php?mod=list_transactions');
+            header('Location: ' . mk_url(array('mod' => 'list_transactions')));
             break;
 
         /* Выход из режима администратора сайта */
