@@ -105,12 +105,7 @@ function transactions_calc_sum()
     $query = "SELECT sum(sum) as total, " .
                      "sum(sum_usd) as total_usd " .
                      "FROM transactions ";
-    $result = db()->query($query);
-    
-    if ($result == FALSE)
-        return ESQL;
-    else 
-        return $result[0];
+    return db()->query($query);
 }
 
 
