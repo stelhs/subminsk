@@ -11,13 +11,13 @@ define("ENOTUNIQUE", -4); // Ошибка добавления в базу, ес
  */
 function global_conf()
 {
-    $http_root_path = "/underminsk_tst/"; // Внутренний путь к файлам
-    $absolute_root_path = "/var/www/underminsk_tst/"; // Абсолютный пусть к файлам
+    $http_root_path = "/subminsk/"; // Внутренний путь к файлам
+    $absolute_root_path = "/var/www/subminsk/"; // Абсолютный пусть к файлам
     
     return array('database' => array("host" => '127.0.0.1',
-                                    "user" => 'root',
-                                    "pass" => 'nuclear63',
-                                    "database" => 'underminsk_tst'),
+                                    "user" => 'subminsk',
+                                    "pass" => 'kl2sfs567x23d',
+                                    "database" => 'subminsk'),
                 'global_marks' => array('http_root' => $http_root_path,
                                         'http_css' => $http_root_path . 'css/',
                                         'http_img' => $http_root_path . 'i/',
