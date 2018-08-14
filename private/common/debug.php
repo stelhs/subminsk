@@ -4,17 +4,6 @@
  */
 
 /**
- * Вывод данных
- * @param $data
- */
-function dump($data)
-{
-    echo '<pre>';
-    print_r($data);
-    echo '</pre>';
-}
-
-/**
  * Вывод сообщения об ошибке
  */
 function dbg_err($data)
