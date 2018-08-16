@@ -15,8 +15,9 @@ define("ENOTUNIQUE", -4); // Ошибка добавления в базу, ес
  */
 function global_conf()
 {
-    $http_root_path = "/subminsk/"; // Внутренний путь к файлам
-    $absolute_root_path = "/var/www/subminsk/"; // Абсолютный пусть к файлам
+    $path = parse_json_config('private/.path.json');
+    $http_root_path = $path['http_root_path']; // Внутренний путь к файлам
+    $absolute_root_path = $path['absolute_root_path']; // Абсолютный пусть к файлам
 
     return array('global_marks' => array('http_root' => $http_root_path,
                                         'http_css' => $http_root_path . 'css/',

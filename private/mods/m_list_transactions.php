@@ -24,7 +24,7 @@ function m_list_transactions($argv = array())
     /* Display moneys_in_stock */
     $budget_sum = transactions_calc_budget();
     $tpl->assign("moneys_in_stock", ['total' => $budget_sum]);
-    if (!$budget_sum) {
+    if ($budget_sum == 0) {
         $tpl->assign("no_money");
         if ($row_count)
             $tpl->assign("moneys_was");
