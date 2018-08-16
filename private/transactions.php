@@ -22,75 +22,34 @@ function transactions_insert($array_params)
     $data = array();
 
     /*  выбираем только нужные поля */
-    $fields = array('sum', 'sum_usd', 'total', 'total_usd', 'payer_id', 'author_id', 'reason', 'date');
+    $fields = array('sum', 'src_id', 'dst_id', 'author_id', 'reason', 'date');
     foreach ($array_params as $key => $value)
         if (in_array($key, $fields))
             $data[$key] = $value;
-            
-    if(empty($data["sum"]) && empty($data["sum_usd"])) { 
-        dbg_err("sum is not set");    
-        return EINVAL;    
+
+    if(empty($data["sum"])) {
+        dbg_err("sum is not set");
+        return EINVAL;
     }
 
     if(empty($data["reason"])) {
-        dbg_err("reason is not set");    
+        dbg_err("reason is not set");
         return EINVAL;
     }
-    
+
     if(empty($data["date"])) {
-        dbg_err("date is not set");    
-        return EINVAL;    
-    }
-
-    return db()->insert('transactions', $data); 
-}
-
-
-/**
- * добавляет долги
- * @param $array_params - массив с данными
- * @param [who_id] - Кто одалживает
- * @param [whom_id] - Кому одалживает
- * @param [sum] - сумма в рублях
- * @param [sum_usd] - сумма в USD
- * @param [reason] - причина долга
- * @param [date] - дата одалживания
- * @return EINVAL в случае ошибки входных параметров
- * @return ESQL в случае некорретного sql запроса
- * @return id в случае успешного добавления
- */
-function debts_insert($array_params)
-{
-    $data = array();
-
-    /*  выбираем только нужные поля */
-    $fields = array('who_id', 'whom_id', 'sum', 'sum_usd', 'date', 'reason');
-    foreach ($array_params as $key => $value)
-        if (in_array($key, $fields))
-            $data[$key] = $value;
-            
-    if(empty($data["sum"]) && empty($data["sum_usd"])) { 
-        dbg_err("sum is not set");    
-        return EINVAL;    
-    }
-
-    if(empty($data["whom_id"])) {
-        dbg_err("WHOM is not set");    
+        dbg_err("date is not set");
         return EINVAL;
     }
-    
-    if(empty($data["date"])) {
-        dbg_err("date is not set");    
-        return EINVAL;    
-    }
 
-    return db()->insert('debts', $data); 
+    return db()->insert('transactions', $data);
 }
+
 
 
 function transactions_get_list()
 {
-    $query = "SELECT * FROM transactions ORDER BY created DESC";
+    $query = "SELECT * FROM transactions ORDER BY id DESC";
     return db()->query_list($query);
 }
 
@@ -98,105 +57,76 @@ function transactions_get_list()
    Посчитать сумму по всем транзакциям
  * @return EINVAL в случае ошибки входных параметров
  * @return ESQL в случае некорретного sql запроса
- * @return array(sum, sum_usd) в случае успешного добавления    
+ * @return array(sum, sum_usd) в случае успешного добавления
 */
-function transactions_calc_sum()
+function transactions_calc_budget()
 {
-    $query = "SELECT sum(sum) as total, " .
-                     "sum(sum_usd) as total_usd " .
-                     "FROM transactions ";
-    return db()->query($query);
+    $sum_total = db()->query("SELECT sum(sum) as sum " .
+                             "FROM transactions WHERE dst_id = (" .
+                                "SELECT id FROM users WHERE type='subminsk'" .
+                             ") ");
+
+    $sum_space = db()->query("SELECT sum(sum) as sum " .
+                             "FROM transactions WHERE dst_id = (" .
+                                 "SELECT id FROM users WHERE type='space'" .
+                             ") AND src_id = (" .
+                                 "SELECT id FROM users WHERE type='subminsk')");
+
+
+    return sprintf("%.2f", round($sum_total['sum'] - $sum_space['sum'], 2));
+}
+
+function transactions_calc_sum_to_subminsk()
+{
+    $row = db()->query("SELECT sum(sum) as sum " .
+                       "FROM transactions WHERE dst_id = (" .
+                           "SELECT id FROM users WHERE type='subminsk'" .
+                       ") ");
+
+    return sprintf("%.2f", round($row['sum'], 2));
+}
+
+function transactions_calc_sum_to_space()
+{
+    $row = db()->query("SELECT sum(sum) as sum " .
+                       "FROM transactions WHERE dst_id = (" .
+                           "SELECT id FROM users WHERE type='space'" .
+                       ") ");
+
+    return sprintf("%.2f", round($row['sum'], 2));
+}
+
+function transactions_calc_sum_transmit_to_space_from_subminsk()
+{
+    $row = db()->query("SELECT sum(sum) as sum " .
+                       "FROM transactions WHERE dst_id = (" .
+                       "SELECT id FROM users WHERE type='space'" .
+                       ") AND src_id = (" .
+                       "SELECT id FROM users WHERE type='subminsk')");
+
+    return sprintf("%.2f", round($row['sum'], 2));
+}
+
+function transactions_calc_sum_transmit_to_subminsk_from_space()
+{
+    $row = db()->query("SELECT sum(sum) as sum " .
+                       "FROM transactions WHERE dst_id = (" .
+                       "SELECT id FROM users WHERE type='subminsk'" .
+                       ") AND src_id = (" .
+                       "SELECT id FROM users WHERE type='space')");
+
+    return sprintf("%.2f", round($row['sum'], 2));
 }
 
 
-function debts_get_list($filter = '')
+function transactions_calc_sum_subminsk_to_users()
 {
-    $query = "SELECT * FROM debts ";
+    $row = db()->query("SELECT sum(sum) as sum " .
+                       "FROM transactions " .
+                       "WHERE src_id = (SELECT id FROM users WHERE type='subminsk') AND " .
+                             "dst_id != (SELECT id FROM users WHERE type='space')");
 
-    if ($filter)
-        $query .= 'WHERE ' . $filter . ' ';
-
-    $query .= " ORDER BY created DESC";
-    return db()->query_list($query);
+    return sprintf("%.2f", round($row['sum'], 2));
 }
-
-function debt_get_by_id($id)
-{
-    if (!is_numeric($id) || !isset($id))
-        return EINVAL;
-    
-    $query = "SELECT * FROM debts WHERE id = " . $id;
-    $result = db()->query($query);
-    
-    if ($result == FALSE)
-        return ESQL;
-    else 
-        return $result[0];
-}
-
-function debt_remove($id)
-{
-    if (!is_numeric($id) || !isset($id))
-        return EINVAL;
-
-    return db()->update('debts', $id, array('repaid' => '1'));
-}
-
-function debt_change_sum($id, $new_sum, $new_sum_usd)
-{
-    if (!is_numeric($id) || !isset($id))
-        return EINVAL;
-
-    $set_arr = array();
-    if ($new_sum)
-        $set_arr['sum'] = $new_sum;
-
-    if ($new_sum_usd)
-        $set_arr['sum_usd'] = $new_sum_usd;
-
-    return db()->update('debts', $id, $set_arr);
-}
-
-
-/**
- * объявить о взносе
- * @param $array_params - массив с данными
- * @param [author_id] - Кто одалживает
- * @param [sum] - сумма в рублях
- * @param [sum_usd] - сумма в USD
- * @param [reason] - причина взноса
- * @param [except] - список ID пользователей исключенных из взноса
- * @return EINVAL в случае ошибки входных параметров
- * @return ESQL в случае некорретного sql запроса
- * @return id в случае успешного добавления
- */
-function pledged_insert($array_params)
-{
-    $data = array();
-
-    /*  выбираем только нужные поля */
-    $fields = array('author_id', 'sum', 'sum_usd', 'reason', 'except');
-    foreach ($array_params as $key => $value)
-        if (in_array($key, $fields))
-            $data[$key] = $value;
-            
-    if(empty($data["sum"]) && empty($data["sum_usd"])) { 
-        dbg_err("sum is not set");    
-        return EINVAL;    
-    }
-
-    if(empty($data["author_id"])) {
-        dbg_err("Author is not set");    
-        return EINVAL;
-    }
-
-    if(empty($data["reason"])) {
-        dbg_err("Reason is not set");    
-        return EINVAL;    
-    }
-
-    return db()->insert('of_pledges', $data); 
-}
-
 
 ?>

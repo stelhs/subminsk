@@ -1,4 +1,4 @@
-	<?php
+<?php
 
 /* общие библиотеки */
 require_once "private/common/debug.php";

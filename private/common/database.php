@@ -5,7 +5,7 @@
  */
 class Database {
     private $link; // Дескриптор соединения с сервером MySql
-    
+
     /**
      * Открывает соединение с базой данных
      * @return EBASE - в случае ошибки
@@ -20,28 +20,28 @@ class Database {
                                 $arg_list['port']);
         if (!$this->link)
             return EBASE;
-    
+
         mysqli_query($this->link, 'set character set utf8');
         mysqli_query($this->link, 'set names utf8');
         return 1;
-    
+
     }
 
     function query($query)
     {
         $data = array();
         $row = array();
-    
+
         $result = mysqli_query($this->link, $query);
         if ($result === TRUE)
             return 1;
         if ($result === FALSE)
             return ESQL;
-    
+
         return mysqli_fetch_assoc($result);
     }
 
-    
+
     /**
      * Выполняет запрос
      *@param $query - запрос
@@ -53,14 +53,14 @@ class Database {
     {
         $data = array();
         $row = array();
-        
+
         $result = mysqli_query($this->link, $query);
         if($result === TRUE)
             return 0;
 
         if($result === FALSE)
             return -ESQL;
-            
+
         $id = 0;
         while($row = mysqli_fetch_assoc($result)) {
             $id++;
@@ -72,8 +72,8 @@ class Database {
 
         return $data;
     }
-    
-    
+
+
     /**
      * Добавляет запись в БД
      * @param $table_name - имя таблицы для добавления
@@ -88,17 +88,18 @@ class Database {
         foreach ($arg_list as $field => $value) {
             if ($field == 'id')
                 continue;
-            $query .= $separator . '`' .  $field . '`  = "' . $value . '"';
+            $query .= $separator . '`' .  $field . '`  = "' . addslashes($value) . '"';
             $separator = ',';
         }
+
         $result = mysqli_query($this->link, $query);
         if ($result === FALSE)
             return ESQL;
         else
             return mysqli_insert_id($this->link);
     }
-    
-    
+
+
     /**
      * Обновляет данные в БД с указанным id
      * @param $table - имя таблицы для обновления
@@ -122,10 +123,10 @@ class Database {
             return 0;
         else
             return ESQL;
-    
+
     }
-    
-    
+
+
     /**
      * Закрывает ранее открытое соединение с базой данных
      * @return EBASE - в случае ошибки
@@ -144,7 +145,7 @@ class Database {
 function db()
 {
     static $database = NULL;
-    if (!$database) 
-        $database = new Database;  
+    if (!$database)
+        $database = new Database;
     return $database;
 }
