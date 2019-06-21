@@ -98,7 +98,7 @@ if(isset($_POST['post_query']))
                 break;
             }
 
-            if ($sum <= 0) {
+            if ($sum < 0) {
                 message_box_display("message_einval");
                 header('Location: ' . mk_url(array('mod' => 'list_transactions')));
                 break;

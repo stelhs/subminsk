@@ -27,7 +27,7 @@ function transactions_insert($array_params)
         if (in_array($key, $fields))
             $data[$key] = $value;
 
-    if(empty($data["sum"])) {
+    if(!isset($data["sum"])) {
         dbg_err("sum is not set");
         return EINVAL;
     }
